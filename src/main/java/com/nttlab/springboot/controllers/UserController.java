@@ -1,7 +1,6 @@
 package com.nttlab.springboot.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -61,9 +60,7 @@ public class UserController {
 				flash.addFlashAttribute("error", "Email ya registrado en nuestro sistema");
 				return "redirect:/user/new";
 			}
-			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			String encodedPassword = encoder.encode(client.getPassword());
-			client.setPassword(encodedPassword);
+			client.setPassword(client.getPassword());
 			Cart cart = new Cart(client);
 			client.setCart(cart);
 			userService.save(client);

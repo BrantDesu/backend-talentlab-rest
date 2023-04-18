@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -81,11 +80,9 @@ public class LoginController {
 			return "signUp";
 		}
 		
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		String encodedPassword = encoder.encode(client.getPassword());
+	
 		//crear el cliente con las variables de la clase Client. antes de, crear un carrito
 		client.setAuthority("ROLE_USER");
-		client.setPassword(encodedPassword);
 		client.setCart(new Cart(client));
 		clientService.save(client);
 		return "login";

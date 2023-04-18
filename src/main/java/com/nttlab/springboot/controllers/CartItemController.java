@@ -3,9 +3,6 @@ package com.nttlab.springboot.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,25 +38,20 @@ public class CartItemController {
 		SessionStatus status
 	) 
 	{
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!(authentication instanceof AnonymousAuthenticationToken)) {
-		    String currentUserName = authentication.getName();
-			Product product = productService.findOne(product_id);
-			Cart cart = clientService.findByEmail(currentUserName).getCart();
-			int total = product.getPrice();
-			if (cart.getCartProductsIds().contains(product_id)) {
-				flash.addFlashAttribute("danger", "El producto ya se encuentra en el carrito, si quieres aumentar su cantidad, dirigete a 'Carrito'.");
-			} else {
-				CartItem cartItem = new CartItem(cart, product, 1, total);
-				flash.addFlashAttribute("success", "El producto ha sido añadido al carrito");
 
-				cartItemService.save(cartItem);
-			}
-			return "redirect:/";
+		Product product = productService.findOne(product_id);
+		Cart cart = clientService.findByEmail("admin@admin.com").getCart();
+		int total = product.getPrice();
+		if (cart.getCartProductsIds().contains(product_id)) {
+			flash.addFlashAttribute("danger", "El producto ya se encuentra en el carrito, si quieres aumentar su cantidad, dirigete a 'Carrito'.");
 		} else {
-			flash.addFlashAttribute("danger", "La sesión expiró");
-			return "error_404";
+			CartItem cartItem = new CartItem(cart, product, 1, total);
+			flash.addFlashAttribute("success", "El producto ha sido añadido al carrito");
+	
+			cartItemService.save(cartItem);
 		}
+		return "redirect:/";
+
 
 
 	}
