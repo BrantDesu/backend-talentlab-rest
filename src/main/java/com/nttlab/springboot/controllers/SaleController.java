@@ -56,10 +56,10 @@ public class SaleController {
 	    	return "redirect:/home";
 		}
 
-	    Sale sale = new Sale(cart.getUser(), cart, cart.calculateCartTotal());
-	    Client client = sale.getUser();
+	    Sale sale = new Sale(cart.getClient(), cart, cart.calculateCartTotal());
+	    Client client = sale.getClient();
 	    cart.setActive(false);
-	    cart.setUser(null);
+	    cart.setClient(null);
 		client.setCart(new Cart(client));
 		clientService.save(client);
 	    saleService.save(sale);

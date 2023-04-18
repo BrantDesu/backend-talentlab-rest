@@ -7,12 +7,15 @@ import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -27,8 +30,8 @@ public class Cart implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCart;
 	
-	@OneToOne(mappedBy = "cart")
-	@JoinColumn(name = "id_user")
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", referencedColumnName = "idUser")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Client client;
 	
@@ -65,11 +68,11 @@ public class Cart implements Serializable{
 		this.active = active;
 	}
 
-	public Client getUser() {
+	public Client getClient() {
 		return client;
 	}
 
-	public void setUser(Client client) {
+	public void setClient(Client client) {
 		this.client = client;
 	}
 
@@ -112,7 +115,7 @@ public class Cart implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Cart [idCart=" + idCart + ", user=" + client + ", cart_items=" + cart_items + ", total=" + total
+		return "Cart [idCart=" + idCart + ", client=" + client + ", cart_items=" + cart_items + ", total=" + total
 				+ ", active=" + active + "]";
 	}
 	

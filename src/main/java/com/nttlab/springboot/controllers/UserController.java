@@ -38,7 +38,7 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/user/form")
-	public String guardarUser(@Valid Client client, BindingResult result, Model model, RedirectAttributes flash,
+	public String guardarClient(@Valid Client client, BindingResult result, Model model, RedirectAttributes flash,
 			SessionStatus status) {
 		String mensajeFlash = null;
 		if(result.hasErrors()) {

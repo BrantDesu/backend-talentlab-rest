@@ -1,4 +1,4 @@
-package com.nttlab.springboot.controllers;
+package com.nttlab.springboot.controllers.rest;
 
 import java.util.HashMap;
 import java.util.List;
@@ -134,22 +134,6 @@ public class ProductRestController {
 		}
 		catch(DataAccessException ex) {
 			response.put("mensaje", "Error al realizar el proceso de edición del producto.");
-			response.put("error", ex.getMessage() + ": " + ex.getMostSpecificCause().getMessage());
-			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@DeleteMapping(value = "/products", produces = "application/json")
-	public ResponseEntity<?> deleteAllProducts(){
-		Map<String,Object> response = new HashMap<>();
-		try {
-			int cantidad = productService.findAll().size();
-			productService.deleteAll();
-			response.put("mensaje", "Se han eliminado " + cantidad + " registros de la base de datos.");
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
-		}
-		catch(DataAccessException ex) {
-			response.put("mensaje", "Error al realizar el proceso de eliminación de los product.");
 			response.put("error", ex.getMessage() + ": " + ex.getMostSpecificCause().getMessage());
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

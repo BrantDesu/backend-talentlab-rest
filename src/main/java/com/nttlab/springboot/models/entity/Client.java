@@ -36,10 +36,9 @@ public class Client implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idUser;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_cart")
+    @OneToMany(mappedBy = "client")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Cart cart;
+    private List<Cart> carts;
 	
 	@ValidatorRut(message = "El rut ingresado no es válido")
 	@Column(name = "rut", unique = true)
@@ -140,12 +139,12 @@ public class Client implements Serializable {
 
 	
 	
-	public Cart getCart() {
-		return cart;
+	public List<Cart> getCarts() {
+		return carts;
 	}
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
+	public void setCarts(List<Cart> carts) {
+		this.carts = carts;
 	}
 
 	public String getAuthority() {
@@ -170,7 +169,7 @@ public class Client implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Client [idUser=" + idUser + ", cart=" + cart + ", rut=" + rut + ", name=" + name + ", lastName="
+		return "Client [idUser=" + idUser + ", rut=" + rut + ", name=" + name + ", lastName="
 				+ lastName + ", authority=" + authority + ", email=" + email + ", password=" + password + ", createdAt="
 				+ createdAt + "]";
 	}
