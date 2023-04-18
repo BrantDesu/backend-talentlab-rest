@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es-CL" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+	<main>
+		<div class="album py-5 bg-light">
+			<div class="container">
+				<div class="input-group">
+					<form class="form-outline" action="/home/search" method="get">
+						<div class="d-flex">
+							<div class="form-outline">
+								<input 
+									class="form-control" 
+									id="search-input" 
+									type="search" 
+									name="search" 
+									th:value="${search}"
+									th:placeholder="Buscar"/> 
+							</div>
+							<div class="form-outline">
+								<select class="form-select" name="filter" id="searchType">
+						      <option value="name">Nombre</option>
+						      <option value="category" th:if="${filter == 'category'}" selected >Categoría</option>
+						      <option value="category" th:unless="${filter == 'category'}">Categoría</option>
+						    </select> 
+							</div>
+							<button id="search-button" type="submit" class="btn btn-primary">
+								<i class="fas fa-search"></i>
+							</button>
+						</div>
+					</form>
+
+					<!--<form action="/product/search">
+						<input type="text" placeholder="texto a buscar" name="text">
+						<button type="submit">buscar</button>
+					</form>-->
+				</div>
+			</div>
+			<div class="container mt-5">
+				<div class="row">
+					<div class="col-md-4" th:each="p: ${products}">
+						<div class="card mb-4 box-shadow">
+							<img class="card-img-top"
+								data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
+								alt="Thumbnail [100%x225]"
+								style="height: 225px; width: 100%; display: block;"
+								src="https://picsum.photos/200"
+								data-holder-rendered="true">
+							<div class="card-body">
+								<p class="card-text" th:text="'Codigo: ' + ${p.idProduct}"></p>
+								<p class="card-text" th:text="${p.name}"></p>
+								<p class="card-text" th:text="'Categoria: ' + ${p.category}"></p>
+								<p class="card-text" th:text="'Stock: ' + ${p.stock}"></p>
+								<div class="d-flex justify-content-between align-items-center">
+									<a class="btn--bs-primary"
+										th:href="@{/cart-item/create/} + ${p.idProduct}">
+										<span class="fs-5"> <i class="fas fa-shopping-cart"></i>
+									</span>
+									</a> <small class="text-muted" th:text=" 'Valor: $ ' + ${p.price}"></small>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
