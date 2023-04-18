@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,6 +20,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="cart_items")
+
+@JsonIgnoreProperties({"cart"})
 public class CartItem implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -26,8 +30,8 @@ public class CartItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCartItem;
 	
-	@ManyToOne
-	@JoinColumn(name="cart_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="cart_id", referencedColumnName = "idCart")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Cart cart;
 	
@@ -46,6 +50,13 @@ public class CartItem implements Serializable {
 		
 	}
 
+	public CartItem(Cart cart, Product product, int quantity) {
+		this.cart = cart;
+		this.product = product;
+		this.quantity = quantity;
+		this.total = quantity * product.getPrice();
+	}
+	
 	public CartItem(Cart cart, Product product, int quantity, int total) {
 		this.cart = cart;
 		this.product = product;
@@ -89,11 +100,9 @@ public class CartItem implements Serializable {
 		this.total = total;
 	}
 	
-	@Override
-	public String toString() {
-		return "CartItem [idCartItem=" + idCartItem + ", cart=" + cart + ", product=" + product + ", quantity="
-				+ quantity + ", total=" + total + "]";
+	public int calculateCartItemTotal() {
+		this.total = this.quantity * this.product.getPrice();;
+		return total;
 	}
 	
-
 }

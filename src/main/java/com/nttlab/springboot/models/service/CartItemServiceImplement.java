@@ -30,9 +30,8 @@ public class CartItemServiceImplement implements iCartItemService{
 
 	@Override
 	@Transactional
-	public void save(CartItem cartItem) {
-		cartItemDao.save(cartItem);
-		
+	public CartItem save(CartItem cartItem) {
+		return cartItemDao.save(cartItem);
 	}
 
 	@Override

@@ -36,7 +36,6 @@ public class Cart implements Serializable{
 	private Client client;
 	
 	@OneToMany(mappedBy = "cart")
-	//@JoinColumn(name = "id_user")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<CartItem> cart_items;
 	
@@ -113,10 +112,4 @@ public class Cart implements Serializable{
 		return products_ids;
 	}
 
-	@Override
-	public String toString() {
-		return "Cart [idCart=" + idCart + ", client=" + client + ", cart_items=" + cart_items + ", total=" + total
-				+ ", active=" + active + "]";
-	}
-	
 }
