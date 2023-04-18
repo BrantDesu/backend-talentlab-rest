@@ -60,7 +60,7 @@ public class SaleController {
 	    Client client = sale.getClient();
 	    cart.setActive(false);
 	    cart.setClient(null);
-		client.setCart(new Cart(client));
+		//client.setCart(new Cart(client));
 		clientService.save(client);
 	    saleService.save(sale);
 	    model.addAttribute("titulo", "Sale");

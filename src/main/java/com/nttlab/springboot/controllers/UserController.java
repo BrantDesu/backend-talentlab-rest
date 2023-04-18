@@ -62,7 +62,7 @@ public class UserController {
 			}
 			client.setPassword(client.getPassword());
 			Cart cart = new Cart(client);
-			client.setCart(cart);
+			//client.setCart(cart);
 			userService.save(client);
 			status.setComplete();
 			flash.addFlashAttribute("success", mensajeFlash);

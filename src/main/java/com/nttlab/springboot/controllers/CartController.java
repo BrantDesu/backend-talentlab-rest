@@ -23,7 +23,7 @@ public class CartController {
 	@GetMapping(value= "/cart")
 	public String userCart(Model model) {
 		model.addAttribute("title","Carrito de Compra");
-		model.addAttribute("cart", clientService.findByEmail("admin@admin.com").getCart());
+		//model.addAttribute("cart", clientService.findByEmail("admin@admin.com").getCart());
 		return "cart";
 
 	}

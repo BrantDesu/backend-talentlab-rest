@@ -83,7 +83,7 @@ public class LoginController {
 	
 		//crear el cliente con las variables de la clase Client. antes de, crear un carrito
 		client.setAuthority("ROLE_USER");
-		client.setCart(new Cart(client));
+		//client.setCart(new Cart(client));
 		clientService.save(client);
 		return "login";
 	}

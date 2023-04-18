@@ -31,30 +31,30 @@ public class CartItemController {
 	@Autowired
 	private iUserService clientService;
 
-	@GetMapping(value = { "/cart-item/create/{product_id}" })
-	public String saveCartItem(
-		@PathVariable(value = "product_id") Long product_id, 
-		RedirectAttributes flash, 
-		SessionStatus status
-	) 
-	{
-
-		Product product = productService.findOne(product_id);
-		Cart cart = clientService.findByEmail("admin@admin.com").getCart();
-		int total = product.getPrice();
-		if (cart.getCartProductsIds().contains(product_id)) {
-			flash.addFlashAttribute("danger", "El producto ya se encuentra en el carrito, si quieres aumentar su cantidad, dirigete a 'Carrito'.");
-		} else {
-			CartItem cartItem = new CartItem(cart, product, 1, total);
-			flash.addFlashAttribute("success", "El producto ha sido añadido al carrito");
-	
-			cartItemService.save(cartItem);
-		}
-		return "redirect:/";
-
-
-
-	}
+//	@GetMapping(value = { "/cart-item/create/{product_id}" })
+//	public String saveCartItem(
+//		@PathVariable(value = "product_id") Long product_id, 
+//		RedirectAttributes flash, 
+//		SessionStatus status
+//	) 
+//	{
+//
+//		Product product = productService.findOne(product_id);
+//		Cart cart = clientService.findByEmail("admin@admin.com").getCart();
+//		int total = product.getPrice();
+//		if (cart.getCartProductsIds().contains(product_id)) {
+//			flash.addFlashAttribute("danger", "El producto ya se encuentra en el carrito, si quieres aumentar su cantidad, dirigete a 'Carrito'.");
+//		} else {
+//			CartItem cartItem = new CartItem(cart, product, 1, total);
+//			flash.addFlashAttribute("success", "El producto ha sido añadido al carrito");
+//	
+//			cartItemService.save(cartItem);
+//		}
+//		return "redirect:/";
+//
+//
+//
+//	}
 
 	@PostMapping(value = { "/cart-item/edit" })
 	public String editCartItem(@RequestParam(name="id_cart_item") Long cartItemId, @RequestParam(name="quantity") Integer quantity, //Integer porque pueden llegar null
