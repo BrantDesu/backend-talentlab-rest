@@ -80,7 +80,7 @@ public class UserRestController {
 		try {
 			client = userService.findByEmail(email);
 			if(client == null) {
-				response.put("mensaje","El client con correo: " + email + " no existen en la base de datos.");
+				response.put("mensaje","El cliente con correo: " + email + " no existen en la base de datos.");
 				return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
 			}
 			return new ResponseEntity<Client>(client, HttpStatus.OK);
