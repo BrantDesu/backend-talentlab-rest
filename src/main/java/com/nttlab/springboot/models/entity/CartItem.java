@@ -30,11 +30,13 @@ public class CartItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCartItem;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="cart_id", referencedColumnName = "idCart")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Cart cart;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer"})
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="product_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)

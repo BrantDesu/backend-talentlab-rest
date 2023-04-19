@@ -7,6 +7,8 @@ import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,11 +32,13 @@ public class Cart implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCart;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer"})
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", referencedColumnName = "idUser")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Client client;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer"})
 	@OneToMany(mappedBy = "cart")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<CartItem> cart_items;

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nttlab.springboot.util.validator.ValidatorRut;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -36,6 +38,7 @@ public class Client implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idUser;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer"})
     @OneToMany(mappedBy = "client")
 	@OnDelete(action = OnDeleteAction.CASCADE)
     private List<Cart> carts;
@@ -63,6 +66,7 @@ public class Client implements Serializable {
 	@Column(name = "email", unique = true)
 	private String email;
 
+	@JsonIgnore
 	@Column(length = 255)
 	@NotEmpty(message = "Este campo debe ser ingresado")
 	private String password;

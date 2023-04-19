@@ -7,6 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,12 +32,14 @@ public class Sale implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idSale;
 	
-
+	//@JsonIgnore
+	@JsonIgnoreProperties({"hibernateLazyInitializer"})
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Client client;
 	
+	@JsonIgnoreProperties({"hibernateLazyInitializer"})
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="cart_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
