@@ -73,6 +73,7 @@ public class UserRestController {
 		}
 	}
 	
+	// TODO: update Client class attributes
 	@GetMapping(value = "/users/email", produces = "application/json")
 	public ResponseEntity<?> getUserByEmail(@RequestParam(value = "email") String email){
 		Client client = null;
