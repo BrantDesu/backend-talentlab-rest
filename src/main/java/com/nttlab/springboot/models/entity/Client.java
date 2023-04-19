@@ -155,5 +155,15 @@ public class Client implements Serializable {
 				+ createdAt + "]";
 	}
 
+	public Long retrieveActiveCartId() {
+		if (carts != null) {
+			for (Cart cart : carts) {
+				if (cart.isActive()) {
+					return cart.getIdCart();
+				}
+			}	
+		}
+		return null;
+	}
 
 }

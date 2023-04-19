@@ -90,14 +90,14 @@ public class UserRestController {
 				return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
 			}
 			
-			Long cart_id = null;	
-			
-			for (Cart c : client.getCarts()) {
-				if(c.isActive())
-					cart_id = c.getIdCart();
-			}
+//			Long cart_id = null;	
+//			
+//			for (Cart c : client.getCarts()) {
+//				if(c.isActive())
+//					cart_id = c.getIdCart();
+//			}
 
-			response.put("cart_id", cart_id);
+			response.put("cart_id", client.retrieveActiveCartId());
 			response.put("mensaje", "Consulta exitosa");
 			response.put("client", client);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
@@ -146,10 +146,11 @@ public class UserRestController {
 			}
 			
 			client_nuevo = userService.save(client);
-			Cart new_cart = new Cart(client_nuevo);
-			cartService.save(new_cart);
+			Cart cart = new Cart(client_nuevo);
+			Cart new_cart = cartService.save(cart);
 			
 			response.put("mensaje", "Usuario registrado satisfactoriamente.");
+			response.put("cart_id", new_cart.getIdCart());
 			response.put("user", client_nuevo);	
 			
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
