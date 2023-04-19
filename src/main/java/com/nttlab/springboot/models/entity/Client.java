@@ -43,8 +43,7 @@ public class Client implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
     private List<Cart> carts;
 	
-	@ValidatorRut(message = "El rut ingresado no es válido")
-	@Column(name = "rut", unique = true)
+	@Column(name = "rut", unique = true, nullable = true)
 	private String rut;
 
 	@Column(name = "name")

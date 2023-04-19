@@ -28,11 +28,11 @@ class BackendEntregaG3ApplicationTests {
 	@Test
 	void addClient() throws ParseException{
 	
-		Client client = new Client("9094750-8","Carlos","Ibañez","ROLE_ADMIN","carlos@correo.com","123");
+		Client client = new Client("9094750-8","Carlos","Ibañez","ROLE_ADMIN","carlos@correo.com");
 		
 		Client nuevo = clientService.save(client);
 		
-		assertThat(nuevo.getPassword().equals("123"));
+		assertThat(nuevo.getRut().equals("9094750-8"));
 	}
 	
 	@Test

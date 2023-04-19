@@ -1,4 +1,4 @@
-insert into clients (name, last_name, rut, email, authority, password) values ('Don', 'Admin', '5842086-7', 'admin@admin.com', 'ROLE_ADMIN', '$2a$10$34BAB2zfwetWYZAupkFAouR/aFzyMrLZO0HlrDBS5TuqNr1StRdiC')
+insert into clients (name, last_name, rut, email, authority) values ('Don', 'Admin', '5842086-7', 'admin@admin.com', 'ROLE_ADMIN')
 insert into carts (active, total, client_id) values (true, 0, 1)
 insert into products (name, category, price, stock) values ('Zelda', 'Aventura', 69000, 20)
 insert into products (name, category, price, stock) values ('Final Fantasy XVI', 'RPG', 79000, 5)

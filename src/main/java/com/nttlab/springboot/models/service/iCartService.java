@@ -11,13 +11,13 @@ import java.util.List;
 @Repository
 public interface iCartService {
 
-	public List<CartItem> findAll();
+	public List<Cart> findAll();
 	
 	public Cart findOne(Long id);
 	    
-    public void save(CartItem cartItem);
+    public Cart save(Cart cart);
 	    
-    public void delete(CartItem cartItem);
+    public void delete(Cart cart);
 	    
     public void deleteAll(Cart cart);
 	

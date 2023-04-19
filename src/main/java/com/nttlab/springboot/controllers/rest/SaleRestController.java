@@ -91,6 +91,12 @@ public class SaleRestController {
 	        	
 	            response.put("mensaje", "La venta se ha procesado correctamente.");
 	            response.put("sale", new_sale);
+	            
+	            cart.setActive(false);
+	            cartService.save(cart);
+	            
+	            Cart new_cart = new Cart(cart.getClient());
+	            cartService.save(new_cart);
 	        }
 
 	        return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);

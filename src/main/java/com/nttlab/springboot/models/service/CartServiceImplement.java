@@ -17,13 +17,10 @@ public class CartServiceImplement implements iCartService {
     @Autowired
     private iCartDAO cartDao;
 
-    @Autowired
-    private iCartItemDAO cartItemDao;
-
     @Override
 	@Transactional(readOnly = true)
-	public List<CartItem> findAll() {
-    	return (List<CartItem>) cartItemDao.findAll();
+	public List<Cart> findAll() {
+    	return (List<Cart>) cartDao.findAll();
 	}
 
     @Override
@@ -34,15 +31,15 @@ public class CartServiceImplement implements iCartService {
 
 	@Override
 	@Transactional
-	public void save(CartItem cartItem) {
-		cartItemDao.save(cartItem);
+	public Cart save(Cart cart) {
+		return cartDao.save(cart);
 		
 	}
 
 	@Override
 	@Transactional
-	public void delete(CartItem cartItem) {
-		cartItemDao.delete(cartItem);
+	public void delete(Cart cartItem) {
+		cartDao.delete(cartItem);
 		
 	}
 

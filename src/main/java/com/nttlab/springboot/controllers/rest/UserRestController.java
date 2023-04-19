@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nttlab.springboot.models.entity.Cart;
 import com.nttlab.springboot.models.entity.Client;
+import com.nttlab.springboot.models.service.iCartService;
 import com.nttlab.springboot.models.service.iUserService;
 import com.nttlab.springboot.util.validator.EmailValidator;
 import com.nttlab.springboot.util.validator.RutValidator;
@@ -32,6 +34,9 @@ public class UserRestController {
 	
 	@Autowired
 	private iUserService userService;
+	
+	@Autowired
+	private iCartService cartService;
 	
 	@GetMapping(value = {"/users"}, produces = "application/json")
 	public ResponseEntity<?> getAllUsers(){
@@ -98,10 +103,13 @@ public class UserRestController {
 		Client client_nuevo = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
-			boolean rutValido = new RutValidator().isValid(client.getRut(),null);
-			if(!rutValido) {
-				response.put("mensaje", "Error al realizar el registro del usuario. El rut ingresado no es válido.");
-				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
+			
+			if(client.getRut() != null) {
+				boolean rutValido = new RutValidator().isValid(client.getRut(),null);
+				if(!rutValido) {
+					response.put("mensaje", "Error al realizar el registro del usuario. El rut ingresado no es válido.");
+					return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
+				}
 			}
 			
 			boolean emailValido = new EmailValidator().isValid(client.getEmail(), null);
@@ -116,15 +124,23 @@ public class UserRestController {
 					response.put("mensaje", "Error al realizar el registro del usuario. El correo indicado ya existe en nuestros registros.");
 					return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
 				}
-				if(a.getRut().equalsIgnoreCase(client.getRut())) {
-					response.put("mensaje", "Error al realizar el registro del usuario. El rut indicado ya existe en nuestros registros.");
-					return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
+				
+				if(client.getRut() != null) {
+					if(a.getRut().equalsIgnoreCase(client.getRut())) {
+						response.put("mensaje", "Error al realizar el registro del usuario. El rut indicado ya existe en nuestros registros.");
+						return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
+					}
 				}
+				
 			}
 			
 			client_nuevo = userService.save(client);
 			response.put("mensaje", "Usuario registrado satisfactoriamente.");
 			response.put("user", client_nuevo);
+			
+			Cart new_cart = new Cart(client_nuevo);
+			cartService.save(new_cart);
+			
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 		}
 		catch(DataAccessException ex) {
@@ -146,13 +162,14 @@ public class UserRestController {
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 			}
 			
-			boolean rutValido = new RutValidator().isValid(client.getRut(),null);
-			if(!rutValido) {
-				response.put("mensaje", "Error al realizar la edición del usuario. El rut ingresado no es válido.");
-				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
+			if(client.getRut() != null) {
+				boolean rutValido = new RutValidator().isValid(client.getRut(),null);
+				if(!rutValido) {
+					response.put("mensaje", "Error al realizar la edición del usuario. El rut ingresado no es válido.");
+					return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
+				}
 			}
-			
-			
+		
 			boolean emailValido = new EmailValidator().isValid(client.getEmail(), null);
 			if(!emailValido) {
 				response.put("mensaje", "Error al realizar el registro del usuario. El email ingresado no es válido.");
@@ -166,14 +183,18 @@ public class UserRestController {
 						response.put("mensaje", "Error al realizar el registro del usuario. El correo indicado ya existe en nuestros registros.");
 						return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
 					}
-					if(a.getRut().equalsIgnoreCase(client.getRut())) {
-						response.put("mensaje", "Error al realizar el registro del usuario. El rut indicado ya existe en nuestros registros.");
-						return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
+					if(client.getRut() != null) {
+						if(a.getRut().equalsIgnoreCase(client.getRut())) {
+							response.put("mensaje", "Error al realizar el registro del usuario. El rut indicado ya existe en nuestros registros.");
+							return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
+						}
 					}
 				}
 			}
-			
+
+			if(client.getRut() != null)
 			actual_client.setRut(client.getRut());
+			
 			actual_client.setName(client.getName());
 			actual_client.setLastName(client.getLastName());
 			actual_client.setEmail(client.getEmail());
