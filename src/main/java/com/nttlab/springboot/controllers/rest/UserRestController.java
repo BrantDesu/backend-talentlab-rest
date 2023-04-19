@@ -176,7 +176,6 @@ public class UserRestController {
 			actual_client.setName(client.getName());
 			actual_client.setLastName(client.getLastName());
 			actual_client.setEmail(client.getEmail());
-			actual_client.setPassword(client.getPassword());
 			actual_client.setAuthority(client.getAuthority());
 			updated_client = userService.save(actual_client);
 			response.put("mensaje", "Usuario modificado satisfactoriamente.");

@@ -45,16 +45,13 @@ public class Client implements Serializable {
 	
 	@ValidatorRut(message = "El rut ingresado no es válido")
 	@Column(name = "rut", unique = true)
-	@NotEmpty
 	private String rut;
 
 	@Column(name = "name")
-	@NotEmpty
 	@Size(min = 2, max = 50)
 	private String name;
 
 	@Column(name = "last_name")
-	@NotEmpty(message = "El apellido es requerido")
 	@Size(min = 2, max = 50)
 	private String lastName;
 	
@@ -65,12 +62,6 @@ public class Client implements Serializable {
 	@NotEmpty(message = "Este campo debe ser ingresado")
 	@Column(name = "email", unique = true)
 	private String email;
-
-	@JsonIgnore
-	@Column(length = 255)
-	@NotEmpty(message = "Este campo debe ser ingresado")
-	private String password;
-	
 	
 	@Column(name = "created_at")
 
@@ -88,15 +79,13 @@ public class Client implements Serializable {
 	}
 	
 	public Client(@NotEmpty String rut, @NotEmpty @Size(min = 2, max = 50) String name,
-			@NotEmpty @Size(min = 2, max = 50) String lastName, String authority, @Email @NotEmpty String email,
-			@NotEmpty String password) {
+			@NotEmpty @Size(min = 2, max = 50) String lastName, String authority, @Email @NotEmpty String email) {
 		super();
 		this.rut = rut;
 		this.name = name;
 		this.lastName = lastName;
 		this.authority = authority;
 		this.email = email;
-		this.password = password;
 	}
 
 	public Long getIdUser() {
@@ -161,18 +150,10 @@ public class Client implements Serializable {
 		return createdAt;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	@Override
 	public String toString() {
 		return "Client [idUser=" + idUser + ", rut=" + rut + ", name=" + name + ", lastName="
-				+ lastName + ", authority=" + authority + ", email=" + email + ", password=" + password + ", createdAt="
+				+ lastName + ", authority=" + authority + ", email=" + email + ", createdAt="
 				+ createdAt + "]";
 	}
 	

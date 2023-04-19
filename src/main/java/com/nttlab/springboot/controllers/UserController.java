@@ -60,7 +60,7 @@ public class UserController {
 				flash.addFlashAttribute("error", "Email ya registrado en nuestro sistema");
 				return "redirect:/user/new";
 			}
-			client.setPassword(client.getPassword());
+			//client.setPassword(client.getPassword());
 			Cart cart = new Cart(client);
 			//client.setCart(cart);
 			userService.save(client);
