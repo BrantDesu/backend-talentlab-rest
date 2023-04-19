@@ -38,7 +38,7 @@ public class Client implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idUser;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer"})
+	@JsonIgnore
     @OneToMany(mappedBy = "client")
 	@OnDelete(action = OnDeleteAction.CASCADE)
     private List<Cart> carts;
@@ -87,8 +87,6 @@ public class Client implements Serializable {
 		
 	}
 	
-	
-
 	public Client(@NotEmpty String rut, @NotEmpty @Size(min = 2, max = 50) String name,
 			@NotEmpty @Size(min = 2, max = 50) String lastName, String authority, @Email @NotEmpty String email,
 			@NotEmpty String password) {

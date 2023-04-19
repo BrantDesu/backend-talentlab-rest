@@ -13,7 +13,7 @@ public interface iSaleService {
 	
 	public List<Sale> findAll();
 	
-    public void save(Sale sale);
+    public Sale save(Sale sale);
 	
 	public  Sale findOne(Long id);
 	

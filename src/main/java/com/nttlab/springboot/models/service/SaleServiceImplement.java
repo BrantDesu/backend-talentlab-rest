@@ -24,9 +24,9 @@ public class SaleServiceImplement implements iSaleService {
 	}
 
 	@Override
-	public void save(Sale sale) {
+	public Sale save(Sale sale) {
 		
-		saleDao.save(sale);
+		return saleDao.save(sale);
 	}
 	
 

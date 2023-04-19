@@ -61,6 +61,12 @@ public class Sale implements Serializable {
 		this.cart = cart;
 		this.total = total;
 	}
+	
+	public Sale(Cart cart) {
+		this.client = cart.getClient();
+		this.cart = cart;
+		this.total = cart.calculateCartTotal();
+	}
 
 	public Long getIdSale() {
 		return idSale;
@@ -96,7 +102,7 @@ public class Sale implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Sale [idSale=" + idSale + ", client=" + client + ", cart=" + cart + ", createdAt=" + createdAt
+		return "Sale [idSale=" + idSale + ", client=" + client.getIdUser() + ", cart=" + cart.getIdCart() + ", createdAt=" + createdAt
 				+ ", total=" + total + "]";
 	}
 	
