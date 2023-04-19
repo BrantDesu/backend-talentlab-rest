@@ -72,6 +72,8 @@ public class UserRestController {
 		}
 	}
 	
+	
+	// TODO: update Client class attributes
 	@PostMapping(value= "/users", produces = "application/json")
 	public ResponseEntity<?> createAlumno(@RequestBody Client client){
 		Client client_nuevo = null;
