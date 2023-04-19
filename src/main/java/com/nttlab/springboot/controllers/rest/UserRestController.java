@@ -89,7 +89,18 @@ public class UserRestController {
 				response.put("mensaje","El cliente con correo: " + email + " no existen en la base de datos.");
 				return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
 			}
-			return new ResponseEntity<Client>(client, HttpStatus.OK);
+			
+			Long cart_id = null;	
+			
+			for (Cart c : client.getCarts()) {
+				if(c.isActive())
+					cart_id = c.getIdCart();
+			}
+
+			response.put("cart_id", cart_id);
+			response.put("mensaje", "Consulta exitosa");
+			response.put("client", client);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 		}
 		catch(DataAccessException ex) {
 			response.put("mensaje", "Error al realizar la consulta");
@@ -135,11 +146,11 @@ public class UserRestController {
 			}
 			
 			client_nuevo = userService.save(client);
-			response.put("mensaje", "Usuario registrado satisfactoriamente.");
-			response.put("user", client_nuevo);
-			
 			Cart new_cart = new Cart(client_nuevo);
 			cartService.save(new_cart);
+			
+			response.put("mensaje", "Usuario registrado satisfactoriamente.");
+			response.put("user", client_nuevo);	
 			
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 		}

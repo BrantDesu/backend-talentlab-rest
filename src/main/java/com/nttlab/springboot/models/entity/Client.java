@@ -128,7 +128,6 @@ public class Client implements Serializable {
 	}
 
 	
-	
 	public List<Cart> getCarts() {
 		return carts;
 	}
@@ -155,13 +154,6 @@ public class Client implements Serializable {
 				+ lastName + ", authority=" + authority + ", email=" + email + ", createdAt="
 				+ createdAt + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 
 }
