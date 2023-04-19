@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nttlab.springboot.models.entity.Client;
@@ -54,7 +55,7 @@ public class UserRestController {
 	}
 
 	@GetMapping(value = "/users/{id}", produces = "application/json")
-	public ResponseEntity<?> getAlumnoById(@PathVariable(value = "id", required = false) Long id){
+	public ResponseEntity<?> getUserById(@PathVariable(value = "id", required = false) Long id){
 		Client client = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
@@ -72,10 +73,28 @@ public class UserRestController {
 		}
 	}
 	
-	
 	// TODO: update Client class attributes
+	@GetMapping(value = "/users/email", produces = "application/json")
+	public ResponseEntity<?> getUserByEmail(@RequestParam(value = "email") String email){
+		Client client = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			client = userService.findByEmail(email);
+			if(client == null) {
+				response.put("mensaje","El cliente con correo: " + email + " no existen en la base de datos.");
+				return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<Client>(client, HttpStatus.OK);
+		}
+		catch(DataAccessException ex) {
+			response.put("mensaje", "Error al realizar la consulta");
+			response.put("error", ex.getMessage() + ": " + ex.getMostSpecificCause().getMessage());
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@PostMapping(value= "/users", produces = "application/json")
-	public ResponseEntity<?> createAlumno(@RequestBody Client client){
+	public ResponseEntity<?> createUser(@RequestBody Client client){
 		Client client_nuevo = null;
 		Map<String, Object> response = new HashMap<>();
 		try {
@@ -116,7 +135,7 @@ public class UserRestController {
 	}
 	
 	@PutMapping(value = "/users/{id}", produces = "application/json")
-	public ResponseEntity<?> updateAlumno(@RequestBody Client client, @PathVariable Long id){
+	public ResponseEntity<?> updateUser(@RequestBody Client client, @PathVariable Long id){
 		Client updated_client = null;
 		Client actual_client = null;
 		Map<String, Object> response = new HashMap<>();
@@ -174,7 +193,7 @@ public class UserRestController {
 	}
 	
 	@DeleteMapping(value = "/users/{id}", produces = "application/json")
-	public ResponseEntity<?> deleteAlumnoById(@PathVariable Long id){
+	public ResponseEntity<?> deleteUserById(@PathVariable Long id){
 		Map<String,Object> response = new HashMap<>();
 		try {
 			Client a = userService.findOne(id);
