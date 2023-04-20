@@ -125,6 +125,7 @@ public class ProductRestController {
 			actual_product.setCategory(product.getCategory());
 			actual_product.setPrice(product.getPrice());
 			actual_product.setStock(product.getStock());
+			actual_product.setImage(product.getImage());
 
 			updated_product = productService.save(actual_product);
 			response.put("mensaje", "Producto modificado satisfactoriamente.");
