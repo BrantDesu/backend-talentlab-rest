@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
@@ -46,7 +47,8 @@ public class Product implements Serializable {
 	@NotNull
 	private int stock;
 	
-	@Column(name = "image")
+	@Lob
+	@Column(name = "image", columnDefinition = "LONGTEXT")
 	private String image;
 	
 	@Column(name = "created_at")
