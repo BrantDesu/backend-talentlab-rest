@@ -92,7 +92,7 @@ public class UserRestController {
 			
 			response.put("cart_id", client.retrieveActiveCartId());
 			response.put("mensaje", "Consulta exitosa");
-			response.put("client", client);
+			response.put("user", client);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 		}
 		catch(DataAccessException ex) {
