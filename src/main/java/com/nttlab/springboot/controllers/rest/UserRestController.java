@@ -90,13 +90,6 @@ public class UserRestController {
 				return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
 			}
 			
-//			Long cart_id = null;	
-//			
-//			for (Cart c : client.getCarts()) {
-//				if(c.isActive())
-//					cart_id = c.getIdCart();
-//			}
-
 			response.put("cart_id", client.retrieveActiveCartId());
 			response.put("mensaje", "Consulta exitosa");
 			response.put("client", client);

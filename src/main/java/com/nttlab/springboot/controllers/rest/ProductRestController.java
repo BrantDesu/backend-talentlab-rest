@@ -86,7 +86,7 @@ public class ProductRestController {
 					return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
 				}
 			}
-			
+			System.out.println();
 			new_product = productService.save(product);
 			response.put("mensaje", "Producto registrado satisfactoriamente.");
 			response.put("product", new_product);

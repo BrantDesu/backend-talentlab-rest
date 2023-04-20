@@ -46,6 +46,9 @@ public class Product implements Serializable {
 	@NotNull
 	private int stock;
 	
+	@Column(name = "image")
+	private String image;
+	
 	@Column(name = "created_at")
 	@CreationTimestamp
 	private LocalDateTime createdAt;
@@ -106,6 +109,20 @@ public class Product implements Serializable {
 		return createdAt;
 	}
     
+	
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	@Override
 	public String toString() {
 		return "Product ID = " + idProduct + ", name=" + name + ", price=" + price + ", category=" + category
