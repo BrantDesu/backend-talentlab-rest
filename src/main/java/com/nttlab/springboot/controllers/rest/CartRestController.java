@@ -36,6 +36,7 @@ public class CartRestController {
 			if(cart == null) {
 	            response.put("mensaje", "Error, carrito no encontrado.");
 	        } else {
+	        	cart.calculateCartTotal();
 	        	response.put("mensaje", "Carrito encontrado.");
 	        	response.put("cart", cart);
 	        }

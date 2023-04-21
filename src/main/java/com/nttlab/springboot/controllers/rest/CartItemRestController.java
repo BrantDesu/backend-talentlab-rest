@@ -56,6 +56,7 @@ public class CartItemRestController {
 		
 		Map<String, Object> response = new HashMap<>();
 		try {
+			// Check valid cart
 			Cart cart = cartService.findOne((long) body.getCart_id());
 			if(cart == null) {
 	            response.put("mensaje", "El carrito proporcionado no se encuentra en la base de datos.");
@@ -63,6 +64,7 @@ public class CartItemRestController {
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 	        }
 			
+			// Check valid product
 			Product product = productService.findOne((long) body.getProduct_id());
 			if(product == null) {
 	            response.put("mensaje", "El producto proporcionado no se encuentra en la base de datos.");
@@ -70,14 +72,35 @@ public class CartItemRestController {
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 	        }
 			
+			// Check if product was in cart
+			CartItem cartItem = cart.retrieveCartItemByProduct(product);
+			if(cartItem != null) {
+				if(body.getQuantity() > ( product.getStock() - cartItem.getQuantity() )) {
+		            response.put("mensaje", "La cantidad proporcionada ("+ body.getQuantity() +"), más la de tu carrito ("+ cartItem.getQuantity() +"), exceden el stock (" + product.getStock() + ") del producto");
+		            response.put("cart_item", null);
+					return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
+		        }
+				
+				// Product was in cart and the new quantity is in stock
+				cartItem.setQuantity(cartItem.getQuantity() + body.getQuantity());
+				cartItem.calculateCartItemTotal();
+				CartItem newCartItem = cartItemService.save(cartItem);
+				response.put("mensaje", "Cantidad del producto actualizada en el carrito.");
+				response.put("cart_item", newCartItem);
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+			}
+
+			// If product wasn't in cart, check if there is enough product stock
 			if(body.getQuantity() > product.getStock()) {
-	            response.put("mensaje", "La cantidad proporcionada {"+ body.getQuantity() +"} excede el stock {" + product.getStock() + "} del producto");
+	            response.put("mensaje", "La cantidad proporcionada ("+ body.getQuantity() +") excede el stock (" + product.getStock() + ") del producto");
 	            response.put("cart_item", null);
-				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.BAD_REQUEST);
 	        }
 			
-			CartItem cartItem = new CartItem(cart, product, body.getQuantity());
-			CartItem newCartItem = cartItemService.save(cartItem);
+			
+			// Every condition was checked... We create a new Cart Item
+			CartItem ci = new CartItem(cart, product, body.getQuantity());
+			CartItem newCartItem = cartItemService.save(ci);
 			
 			response.put("mensaje", "Producto añadido al carrito.");
 			response.put("cart_item", newCartItem);

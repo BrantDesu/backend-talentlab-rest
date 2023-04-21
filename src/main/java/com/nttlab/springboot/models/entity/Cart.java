@@ -102,13 +102,13 @@ public class Cart implements Serializable{
 	public int calculateCartTotal() {
 		int total = 0;
 		for (CartItem cartItem : cart_items) {
-			total += cartItem.getQuantity() * cartItem.getTotal();
+			total += cartItem.getTotal();
 		}
 		this.total = total;
 		return total;
 	}
 	
-	public List<Long> getCartProductsIds() {
+	public List<Long> retrieveCartProductsIds() {
 		List<Long> products_ids = new ArrayList<>();
 		for (CartItem ci : cart_items) {
 			products_ids.add(ci.getProduct().getIdProduct());
@@ -116,4 +116,13 @@ public class Cart implements Serializable{
 		return products_ids;
 	}
 
+	public CartItem retrieveCartItemByProduct(Product product) {
+		for (CartItem ci : cart_items) {
+			if (ci.getProduct() == product) {
+				return ci;
+			}
+		}
+		return null;
+	}
+	
 }
