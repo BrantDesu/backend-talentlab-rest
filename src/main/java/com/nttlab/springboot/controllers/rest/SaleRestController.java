@@ -66,6 +66,27 @@ public class SaleRestController {
 	    }       
 	}
 	
+	@GetMapping(value = {"/sales/{id}"}, produces = "application/json")
+	public ResponseEntity<?> getSaleById(@PathVariable(value = "id") Long id){
+	    Sale sale = null;
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        sale = saleService.findOne(id);
+	        if(sale == null) {
+	            response.put("mensaje", "El id ("+ id +") de la venta solicitada no existe");
+	        } else {
+	            response.put("mensaje", "Venta encontrada");
+	            response.put("sale", sale);
+	        }
+	        return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+	    }
+	    catch(DataAccessException ex) {
+	        response.put("mensaje", "Error al realizar la consulta");
+	        response.put("error", ex.getMessage() + ": " + ex.getMostSpecificCause().getMessage());
+	        return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }       
+	}
+	
 	@PostMapping(value = "/sales")
 	public ResponseEntity<?> createSale(@RequestParam(name="cart_id") Long cart_id){
 		Map<String, Object> response = new HashMap<>();
