@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nttlab.springboot.models.entity.Product;
@@ -44,6 +45,36 @@ public class ProductRestController {
 				return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 			}
 			response.put("mensaje", "Actualmente la base de datos cuenta con " + products.size() + " registros");
+			response.put("products", products);
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+		}
+		catch(DataAccessException ex) {
+			response.put("mensaje", "Error al realizar la consulta");
+			response.put("error", ex.getMessage() + ": " + ex.getMostSpecificCause().getMessage());
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
+	}
+	
+	@GetMapping(value = {"/products/search"}, produces = "application/json")
+	public ResponseEntity<?> searchProducts(
+			@RequestParam(name = "filter") String filter,
+			@RequestParam(name = "search") String search
+		){
+		List<Product> products = null;
+		Map<String, Object> response = new HashMap<>();
+		try {
+			if (filter.equals("name")) {
+				products = productService.findByName(search);				
+				System.out.println("category");
+			} else {
+				products = productService.findByCategory(search);
+			}
+			if(products.isEmpty()) {
+				response.put("mensaje", "No hay productos registrados con "+ filter +" similar a '"+ search +"'.");
+				response.put("products", products);
+				return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+			}
+			response.put("mensaje", "Se encontraron productos para los parámetros entregados!");
 			response.put("products", products);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 		}

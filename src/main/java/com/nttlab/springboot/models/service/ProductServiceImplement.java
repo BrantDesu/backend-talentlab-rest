@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nttlab.springboot.models.dao.iProductDAO;
 import com.nttlab.springboot.models.entity.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,7 +52,7 @@ public class ProductServiceImplement implements iProductService{
 		if(!p.isEmpty()) {
 			return p;
 		}
-		return null;
+		return new ArrayList<Product>();
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class ProductServiceImplement implements iProductService{
 		if(!p.isEmpty()) {
 			return p;
 		}
-		return null;
+		return new ArrayList<Product>();
 	}
 
 	@Override
